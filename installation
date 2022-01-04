@@ -1,0 +1,73 @@
+INSTALLATION
+
+ubuntu 18
+partizioni:
+swap area (ram)
+ext4 / (ubuntu)
+EFI flag boot,esp avvio (256MB)
+
+restor GRUB UEFI (https://wiki.ubuntu-it.org/AmministrazioneSistema/Grub/Ripristino/Uefi)
+
+
+INSTALL ROS
+ http://wiki.ros.org/melodic/Installation/Ubuntu
+
+$ sudo apt-get install ros-melodic-map-server
+
+create catkin workspace
+
+$ mkdir -p ~/catkin_ws/src
+$ cd ~/catkin_ws/
+$ catkin_make
+
+ACADO
+
+ git clone https://github.com/acado/acado.git -b stable ACADOtoolkit
+ cd ACADOtoolkit
+ mkdir build
+ cd build
+ cmake ..
+ make
+ sudo make install
+ sudo ldconfig
+
+CASADI
+https://github.com/casadi/casadi/wiki/InstallationLinux
+
+
+
+
+Acquisire i privilegi di amministratore digitando nel terminale:
+
+sudo -s
+
+Montare la partizione di sistema:
+
+    se la partizione è in formato ext4:
+
+    mount /dev/sda2 /mnt
+
+    se la partizione è in formato Btrfs:
+
+    mount -o subvol=@ /dev/sda2 /mnt
+
+Montare la partizione EFI:
+
+mount /dev/sda1 /mnt/boot/efi
+
+Montare le rimanenti directory di sistema con il comando:
+
+for i in dev dev/pts proc sys sys/firmware; do mount --bind /$i /mnt/$i; done
+
+Eseguire il chroot con il comando:
+
+chroot /mnt
+
+Riparare il file /boot/grub/grub.cfg e installare GRUB con i comandi:
+
+update-grub
+grub-install
+
+Uscire dal chroot:
+
+exit
